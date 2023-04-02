@@ -1,0 +1,90 @@
+import requests
+import re
+import threading
+import os
+import time
+from colorama import Fore
+
+gelen_dosya = "https://akarguard.net/urls.txt"
+cikan_dosya = "output.txt"
+calisan_proxyler = "calisan_proxyler.txt"
+
+os.system("cls")
+
+adasahillerinde = '''
+
+
+
+    ___    __ __ ___    ____  _________    _   ________
+   /   |  / //_//   |  / __ \/ ____/   |  / | / / ____/
+  / /| | / ,<  / /| | / /_/ / / __/ /| | /  |/ / / __  
+ / ___ |/ /| |/ ___ |/ _, _/ /_/ / ___ |/ /|  / /_/ /  
+/_/  |_/_/ |_/_/  |_/_/ |_|\____/_/  |_/_/ |_/\____/   
+                                                       
+               Proxyler çekiliyor...
+
+
+'''
+
+
+print(Fore.YELLOW + adasahillerinde)
+
+def get_proxies(url):
+    proxies = []
+    try:
+        response = requests.get(url, timeout=10)
+        pattern = re.compile(r"\d+\.\d+\.\d+\.\d+:\d+")
+        proxies = pattern.findall(response.text)
+    except:
+        print(Fore.RED + f"Error: Proxyler alınamadı {url}")
+    return proxies
+
+def save_proxies(proxies, cikan_dosya):
+    with open(cikan_dosya, "a") as file:
+        file.writelines("\n".join(proxies) + "\n")
+    print(Fore.BLUE + f"{len(proxies)} adet proxy buraya keydedildi {cikan_dosya}")
+    time.sleep(2)
+
+def check_proxy(proxy):
+    proxy = proxy.strip()
+    try:
+        response = requests.get("https://www.google.com/", proxies={"http": proxy, "https": proxy}, timeout=10)
+        if response.status_code == 200:
+            calisan_proxyler.append(proxy)
+            print(Fore.WHITE + f"{proxy}" + Fore.GREEN + "   Calisiyor")
+        else:
+            print(Fore.WHITE + f"{proxy}" + Fore.LIGHTMAGENTA_EX + "   HATA (Durum Kodu {response.status_code})")
+    except:
+        print(Fore.WHITE + f"{proxy}" + Fore.RED + "   Calismiyor")
+
+urls = []
+try:
+    response = requests.get(gelen_dosya, timeout=10)
+    urls = response.text.splitlines()
+except:
+    print(Fore.RED + f"Error: URL listesi alınamadı {gelen_dosya}")
+
+proxies = []
+for url in urls:
+    proxies += get_proxies(url)
+
+save_proxies(proxies, cikan_dosya)
+
+with open(cikan_dosya, "r") as file:
+    proxies = file.readlines()
+
+calisan_proxyler = []
+
+threads = []
+for proxy in proxies:
+    thread = threading.Thread(target=check_proxy, args=[proxy])
+    thread.start()
+    threads.append(thread)
+
+for thread in threads:
+    thread.join()
+
+with open(calisan_proxyler, "w") as file:
+    file.writelines("\n".join(calisan_proxyler))
+
+print(Fore.CYAN + f"PROXYLER KAYDEDILDI {calisan_proxyler}")

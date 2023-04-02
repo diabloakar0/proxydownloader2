@@ -1,4 +1,4 @@
-# Proxy Downloader 2
+# Proxy Downloader 2 (HTTP)
 
 Automatically downloads and checks proxies updated every 3 minutes.
 

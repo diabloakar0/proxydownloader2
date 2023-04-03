@@ -51,11 +51,11 @@ def check_proxy(proxy):
         response = requests.get("https://www.google.com/", proxies={"http": proxy, "https": proxy}, timeout=10)
         if response.status_code == 200:
             calisan_proxyler.append(proxy)
-            print(Fore.WHITE + f"{proxy}" + Fore.GREEN + "   Calisiyor")
+            print( Fore.GREEN + "[  Calisiyor ]  " + Fore.WHITE + f"{proxy}")
         else:
-            print(Fore.WHITE + f"{proxy}" + Fore.LIGHTMAGENTA_EX + "   HATA (Durum Kodu {response.status_code})")
+            print(Fore.LIGHTMAGENTA_EX + "[ Cekilemedi ]  " + Fore.WHITE + f"{proxy}")
     except:
-        print(Fore.WHITE + f"{proxy}" + Fore.RED + "   Calismiyor")
+        print(Fore.RED + "[ Calismiyor ]  " + Fore.WHITE + f"{proxy}")
 
 urls = []
 try:

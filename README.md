@@ -23,7 +23,7 @@ pip install colorama
 
 ![Screenshots](https://cdn.discordapp.com/attachments/1001549463703257149/1092167321121992734/image.png)
 
-![Screenshots](https://media.discordapp.net/attachments/1001549463703257149/1092167454446329876/image.png?width=595&height=671)
+![Screenshots](https://media.discordapp.net/attachments/1001899874922537010/1092473594879160542/image.png?width=341&height=670)
 
 
 ## Developer

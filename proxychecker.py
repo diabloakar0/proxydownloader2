@@ -7,25 +7,19 @@ from colorama import Fore
 
 gelen_dosya = "https://akarguard.net/urls.txt"
 cikan_dosya = "output.txt"
-calisan_proxyler = "calisan_proxyler.txt"
+calisan_proxyler_dosyasi = "calisan_proxyler.txt"  # Changed the variable name
 
 os.system("cls")
 
 adasahillerinde = '''
-
-
-
     ___    __ __ ___    ____  _________    _   ________
    /   |  / //_//   |  / __ \/ ____/   |  / | / / ____/
   / /| | / ,<  / /| | / /_/ / / __/ /| | /  |/ / / __  
- / ___ |/ /| |/ ___ |/ _, _/ /_/ / ___ |/ /|  / /_/ /  
+ / ___ |/ /| / ___ |/ _, _/ /_/ / ___ |/ /|  / /_/ /  
 /_/  |_/_/ |_/_/  |_/_/ |_|\____/_/  |_/_/ |_/\____/   
                                                        
                Proxyler çekiliyor...
-
-
 '''
-
 
 print(Fore.YELLOW + adasahillerinde)
 
@@ -45,13 +39,13 @@ def save_proxies(proxies, cikan_dosya):
     print(Fore.BLUE + f"{len(proxies)} adet proxy buraya keydedildi {cikan_dosya}")
     time.sleep(2)
 
-def check_proxy(proxy):
+def check_proxy(proxy, working_proxies):  # Added working_proxies as an argument
     proxy = proxy.strip()
     try:
         response = requests.get("https://www.google.com/", proxies={"http": proxy, "https": proxy}, timeout=10)
         if response.status_code == 200:
-            calisan_proxyler.append(proxy)
-            print( Fore.GREEN + "[  Calisiyor ]  " + Fore.WHITE + f"{proxy}")
+            working_proxies.append(proxy)
+            print(Fore.GREEN + "[  Calisiyor ]  " + Fore.WHITE + f"{proxy}")
         else:
             print(Fore.LIGHTMAGENTA_EX + "[ Cekilemedi ]  " + Fore.WHITE + f"{proxy}")
     except:
@@ -73,18 +67,18 @@ save_proxies(proxies, cikan_dosya)
 with open(cikan_dosya, "r") as file:
     proxies = file.readlines()
 
-calisan_proxyler = []
+working_proxies = []  # Renamed to avoid conflict
 
 threads = []
 for proxy in proxies:
-    thread = threading.Thread(target=check_proxy, args=[proxy])
+    thread = threading.Thread(target=check_proxy, args=(proxy, working_proxies))
     thread.start()
     threads.append(thread)
 
 for thread in threads:
     thread.join()
 
-with open(calisan_proxyler, "w") as file:
-    file.writelines("\n".join(calisan_proxyler))
+with open(calisan_proxyler_dosyasi, "w") as file:
+    file.writelines("\n".join(working_proxies))
 
-print(Fore.CYAN + f"PROXYLER KAYDEDILDI {calisan_proxyler}")
+print(Fore.CYAN + f"PROXYLER KAYDEDILDI {calisan_proxyler_dosyasi}")

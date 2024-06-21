@@ -12,13 +12,18 @@ calisan_proxyler_dosyasi = "calisan_proxyler.txt"  # Changed the variable name
 os.system("cls")
 
 adasahillerinde = '''
+
+
+
     ___    __ __ ___    ____  _________    _   ________
    /   |  / //_//   |  / __ \/ ____/   |  / | / / ____/
   / /| | / ,<  / /| | / /_/ / / __/ /| | /  |/ / / __  
- / ___ |/ /| / ___ |/ _, _/ /_/ / ___ |/ /|  / /_/ /  
+ / ___ |/ /| |/ ___ |/ _, _/ /_/ / ___ |/ /|  / /_/ /  
 /_/  |_/_/ |_/_/  |_/_/ |_|\____/_/  |_/_/ |_/\____/   
                                                        
                Proxyler çekiliyor...
+
+
 '''
 
 print(Fore.YELLOW + adasahillerinde)
